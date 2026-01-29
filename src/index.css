@@ -1,0 +1,331 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design System - Lumina Gallery Theme */
+
+@layer base {
+  :root {
+    /* Custom Fonts */
+    --font-mono: "SF Mono", "Fira Code", monospace;
+    --font-sans: "Inter", system-ui, sans-serif;
+    --font-display: "Cormorant Garamond", Georgia, serif;
+    
+    /* Core Colors */
+    --color-bg: 0 0% 4%;
+    --color-text: 0 0% 100%;
+    --color-text-muted: 0 0% 70%;
+    --color-text-light: 0 0% 50%;
+    --color-accent: 43 74% 52%;
+    
+    /* Spacing */
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    
+    /* Shadcn Tokens - Dark Theme */
+    --background: 0 0% 4%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 43 74% 52%;
+    --primary-foreground: 0 0% 4%;
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 43 74% 52%;
+    --accent-foreground: 0 0% 4%;
+
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 43 74% 52%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 43 74% 52%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 0 0% 18%;
+    --sidebar-ring: 43 74% 52%;
+  }
+
+  .dark {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 43 74% 52%;
+    --primary-foreground: 0 0% 4%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 43 74% 52%;
+    --accent-foreground: 0 0% 4%;
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 43 74% 52%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans);
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ========================================
+   LUMINA SLIDER STYLES
+======================================== */
+
+@layer components {
+  /* Slider Container */
+  .slider-wrapper {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0;
+    transition: opacity 0.8s ease-out;
+    background-color: hsl(var(--background));
+  }
+
+  .slider-wrapper.loaded {
+    opacity: 1;
+  }
+
+  /* WebGL Canvas */
+  .webgl-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 1;
+  }
+
+  /* Slide Counter */
+  .slide-number,
+  .slide-total {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: clamp(10px, 1.2vw, 12px);
+    letter-spacing: 0.15em;
+    z-index: 10;
+    color: hsl(var(--foreground) / 0.5);
+    text-transform: uppercase;
+  }
+
+  .slide-number {
+    top: var(--spacing-lg);
+    left: var(--spacing-lg);
+    font-size: clamp(12px, 1.5vw, 14px);
+    color: hsl(var(--foreground) / 0.8);
+  }
+
+  .slide-total {
+    bottom: var(--spacing-lg);
+    left: var(--spacing-lg);
+  }
+
+  .slide-total::before {
+    content: "/ ";
+    opacity: 0.5;
+  }
+
+  /* Main Content */
+  .slide-content {
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 10;
+    max-width: 90vw;
+    pointer-events: none;
+  }
+
+  .slide-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: hsl(var(--foreground));
+    margin: 0 0 var(--spacing-md) 0;
+    text-shadow: 0 4px 30px hsl(var(--background) / 0.5);
+  }
+
+  .slide-description {
+    font-family: var(--font-sans);
+    font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+    font-weight: 300;
+    letter-spacing: 0.03em;
+    color: hsl(var(--foreground) / 0.7);
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Navigation */
+  .slides-navigation {
+    position: absolute;
+    right: var(--spacing-xl);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    z-index: 10;
+  }
+
+  .slide-nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    cursor: pointer;
+    padding: 0.5rem 0;
+    transition: all 0.3s ease;
+  }
+
+  .slide-nav-item:hover .slide-nav-title {
+    opacity: 1;
+    transform: translateX(-8px);
+  }
+
+  .slide-nav-item.active .slide-nav-title {
+    opacity: 1;
+    color: hsl(var(--primary));
+  }
+
+  .slide-progress-line {
+    width: 40px;
+    height: 2px;
+    background: hsl(var(--foreground) / 0.2);
+    border-radius: 1px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .slide-progress-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    background: hsl(var(--primary));
+    transition: width 0.1s ease, opacity 0.3s ease;
+    border-radius: 1px;
+  }
+
+  .slide-nav-title {
+    font-family: var(--font-mono);
+    font-size: clamp(9px, 1vw, 11px);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: hsl(var(--foreground) / 0.5);
+    opacity: 0;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .slide-nav-item.active .slide-progress-line {
+    background: hsl(var(--foreground) / 0.3);
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .slides-navigation {
+    right: var(--spacing-md);
+    gap: 0.5rem;
+  }
+
+  .slide-progress-line {
+    width: 24px;
+  }
+
+  .slide-nav-title {
+    display: none;
+  }
+
+  .slide-content {
+    bottom: 20%;
+    padding: 0 var(--spacing-md);
+  }
+
+  .slide-number,
+  .slide-total {
+    left: var(--spacing-md);
+  }
+}
+
+/* Custom Animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--foreground) / 0) 0%,
+    hsl(var(--foreground) / 0.1) 50%,
+    hsl(var(--foreground) / 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
